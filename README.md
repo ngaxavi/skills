@@ -19,7 +19,8 @@ skills/
     └── references/
         ├── pod-states.md            # phases, container states, exit codes
         ├── kubectl-cheatsheet.md    # inspection commands, read-only vs mutating
-        └── storage-provider-troubleshooting.md  # CSI provider CRDs (Longhorn/Ceph), disk-full & snapshot bloat
+        ├── storage-provider-troubleshooting.md  # CSI provider CRDs (Longhorn/Ceph), disk-full, snapshot bloat, backups
+        └── gitops-secrets-and-drift.md          # GitOps sync/drift, operator-synced secrets, credential drift
 ```
 
 Each skill is packaged into `META-INF/skills/<org>/<repo>/<skill>/` inside the JAR.

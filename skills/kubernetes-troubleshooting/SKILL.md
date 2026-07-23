@@ -4,14 +4,19 @@ description: >-
   Systematic triage of failing Kubernetes workloads using kubectl. Use when a pod
   is Pending, CrashLoopBackOff, ImagePullBackOff, OOMKilled, Error, or stuck
   Terminating; when a PersistentVolumeClaim will not bind; when a Service returns
-  no endpoints or connections are refused; when DNS resolution fails inside the
-  cluster; or when a node is NotReady or reporting disk, memory, or PID pressure.
-  Use when someone asks why a workload is not running, not reachable, or not
-  scheduling. Use it too for proactive health checks — when someone asks "is the
-  cluster OK?" or whether something is healthy even though nothing is obviously
-  failing, since a green-looking cluster can still hide restart loops, filling
-  disks, and lost redundancy. Prefer this skill over guessing: it defines the
-  order to inspect things so evidence is gathered before any change is made.
+  no endpoints or connections are refused; when an app is reachable inside the
+  cluster but not from outside via Ingress or the Gateway API; when a Deployment's
+  replicas never appear because a ResourceQuota, LimitRange, Pod Security, or
+  admission webhook rejected them; when DNS resolution fails inside the cluster; or
+  when a node is NotReady or reporting disk, memory, or PID pressure. Use when a
+  Secret or config is missing or a live change keeps reverting (operator-synced
+  secrets, GitOps reconciliation). Use when someone asks why a workload is not
+  running, not reachable, or not scheduling. Use it too for proactive health
+  checks — when someone asks "is the cluster OK?" or whether something is healthy
+  even though nothing is obviously failing, since a green-looking cluster can still
+  hide restart loops, filling disks, and lost redundancy. Works on any Kubernetes
+  cluster. Prefer this skill over guessing: it defines the order to inspect things
+  so evidence is gathered before any change is made.
 allowed-tools: Bash Read Grep
 license: MIT
 ---
@@ -31,6 +36,40 @@ the state that would have explained the problem. Deleting a pod stuck in
 `Terminating` with `--force --grace-period=0`, for example, removes the very thing
 you needed to inspect and can leave the underlying resource (a volume attachment,
 a finalizer) in an inconsistent state.
+
+## Step -1: can you trust what kubectl tells you?
+
+Before you diagnose *through* `kubectl`, confirm the lens itself is trustworthy.
+Two failures here quietly poison every observation that follows, and both are
+invisible unless you look for them.
+
+**Right cluster, healthy API.** A stale `kubeconfig` context points you at the wrong
+cluster; a degraded API server returns partial or cached data. Establish ground
+truth first:
+
+```bash
+kubectl config current-context            # are you where you think you are?
+kubectl cluster-info                      # API/control-plane reachable
+kubectl get --raw='/readyz?verbose'       # each API health check, pass/fail
+```
+
+If the API is not `ready`, stop — you are debugging the control plane, not the
+workload, and `get`/`describe` output cannot be trusted until it recovers.
+
+**`Forbidden` is not `NotFound`.** An empty list or a missing object can mean *"it
+does not exist"* or *"your credentials may not see it"* — opposite conclusions with
+the same-looking output. RBAC-blondness is the classic autonomous-agent trap: the
+agent reads an empty result as "no such resource" and diagnoses in the wrong
+direction. Distinguish them explicitly:
+
+```bash
+kubectl auth can-i --list                       # what this identity may actually do
+kubectl auth can-i get pods -n <ns>             # a specific check before trusting output
+```
+
+When you are `Forbidden` from something you need, that is itself a finding: report
+the **visibility gap** ("cannot read X, RBAC denies it") rather than guessing past
+it. A conclusion drawn over a blind spot is worse than an honest "I could not see."
 
 ## Step 0: locate the problem
 
@@ -66,6 +105,14 @@ kubectl top nodes                                          # needs metrics-serve
 A high restart total is a prompt to investigate, not a verdict — read the next
 section before treating it as a fire.
 
+**And red is not always broken.** The mirror image of the above: a firing alert is a
+claim, not proof. Monitoring can lag, flap, or break independently of the thing it
+watches — a stale scrape window, a metrics pipeline that itself fell over, an alert
+whose "resolved" never arrived. Before you act on `SomethingDown`, confirm the
+*actual* current state of the target (`kubectl get`, a direct probe), and check
+whether the alerting stack is healthy. Chasing a false alert wastes exactly the time
+a real incident needs.
+
 ## Step 1: describe before you log
 
 For any unhealthy object, `describe` first. It shows status, conditions, recent
@@ -98,8 +145,12 @@ container is the *restart*; the error you want is in the container that died.
 | `OOMKilled` (in describe) | Memory limit too low, or a leak | §Resources |
 | `Error` / `Completed` (unexpected) | Wrong command, failed init, exit code | §CrashLoop |
 | `Terminating` (stuck) | Finalizer, volume detach, node gone | §Terminating |
-| `Running` but not reachable | Service, endpoints, network policy, DNS | §Networking |
+| `Running` but not reachable (in-cluster) | Service, endpoints, network policy, DNS | §Networking |
+| `Ready` but unreachable from outside | Ingress/Gateway, route parentRefs, port mismatch | §Networking → Ingress and Gateway |
+| Desired replicas never created (no pod) | Quota, LimitRange, PSA, admission webhook | §Admission and policy |
+| Pod runs with values you did not set | `LimitRange` default, mutating webhook | §Admission and policy |
 | Node `NotReady` | kubelet, CNI, disk/memory/PID pressure | §Nodes |
+| Config/Secret missing, or a change keeps reverting | Operator-synced Secret, GitOps reconcile | §Reference → gitops-secrets-and-drift |
 
 ## Reading restart counts (a big number is not a fire)
 
@@ -252,6 +303,63 @@ kubectl describe svc <svc> -n <ns>
 - **Wrong port** — the Service `targetPort` must match the container's actual
   listening port, not just the `port`.
 
+### Ingress and Gateway (reachable from outside?)
+
+When the pod is `Ready` and the Service has endpoints but external traffic still
+fails, the break is at the edge — the Ingress/Gateway layer in front of the Service.
+Work in from the outside:
+
+```bash
+kubectl get ingress,gateway,httproute -A                 # what edge objects exist
+kubectl describe ingress <name> -n <ns>                  # backend refs + controller events
+kubectl describe gateway <name> -n <ns>                  # listener status, Accepted/Programmed
+kubectl describe httproute <name> -n <ns>                # parentRefs + route conditions
+```
+
+- **Ingress with no address / no controller events** — no ingress controller is
+  actually watching this class. Check `ingressClassName` and that the controller
+  (nginx, Traefik, etc.) is running and owns that class.
+- **Gateway API route not attached** — an `HTTPRoute`/`TLSRoute` whose `parentRefs`
+  do not match a real Gateway listener silently routes nothing. Read the route's
+  status conditions (`Accepted`, `ResolvedRefs`) — they name the mismatch: wrong
+  parent name/namespace, a listener the route is not allowed to attach to, a
+  hostname or port that no listener serves.
+- **Port / protocol mismatch** — the Gateway listener port, the route's backend
+  port, and the Service port must line up; a listener on `:443 HTTPS` in front of a
+  Service that only serves `:80` fails at the edge, not in the pod.
+- **Reachability vs readiness are different questions** — a healthy pod proves the
+  *app* works, not that the *path to it* does. When "it's down" but the pod is
+  `Ready`, suspect the edge (or DNS/TLS/an upstream proxy in front of the cluster)
+  before you touch the workload.
+
+## Admission and policy (the object was rejected or constrained)
+
+Not every failure is a running pod — sometimes the object never got created, or got
+created smaller than you asked, because an admission or policy layer intervened. The
+tell is that the *controller* (Deployment/Job/ReplicaSet) has an event but no pod
+appears, or a pod appears with values you did not set.
+
+```bash
+kubectl describe replicaset <rs> -n <ns> | sed -n '/Events:/,$p'   # FailedCreate here
+kubectl get events -n <ns> --sort-by=.lastTimestamp | tail -20
+kubectl get resourcequota,limitrange -n <ns>
+```
+
+- **`exceeded quota` on the controller's event** — a `ResourceQuota` blocks
+  creation until you lower requests or raise the quota. The pod count stays short of
+  the desired replicas with no `Pending` pod to inspect.
+- **`LimitRange`** — silently *mutates* requests/limits to a namespace default or
+  min/max. If a pod runs with resources you never specified, look here before
+  suspecting the app.
+- **Pod Security Admission (`violates PodSecurity ...`)** — the namespace's PSA
+  level rejected a pod that wanted privilege, host paths, or a root user. The
+  message names the exact control violated.
+- **Validating/mutating webhooks (Gatekeeper, Kyverno, or custom)** — a `denied the
+  request` error from an admission webhook is policy, not a Kubernetes-core failure.
+  Read the policy message; if the webhook backend is *down*, it can fail-closed and
+  block unrelated creates cluster-wide (`kubectl get validatingwebhookconfiguration`
+  and check the backing service).
+
 ## Terminating (stuck)
 
 ```bash
@@ -355,6 +463,43 @@ landing, and starting an operation is not the same as it finishing:
   health is not restored the instant the command returns. Poll the relevant status
   (`rollout status`, the provider's progress field, `df`) until it genuinely
   completes before reporting success.
+- **Check who owns the object before patching live.** If a controller reconciles the
+  resource toward a declared desired state — a GitOps tool (Argo CD, Flux) or any
+  operator — a live `kubectl edit`/`patch` is temporary: the controller reverts it
+  on the next sync, often within minutes, and your "fix" evaporates. Look for the
+  owner (`metadata.ownerReferences`, `argocd.argoproj.io/*` or similar labels, the
+  managing operator's CRD). When something reconciles it, fix the **source of
+  truth** (the Git manifest, the CR spec) — a live patch is at best a stopgap, and
+  worth doing only knowingly.
+
+## Reporting the finding (structured output)
+
+Especially when this skill drives an autonomous agent, a free-text conclusion is
+hard to act on or gate. State findings in a consistent shape so a human — or a
+policy layer — can judge and approve before anything mutates:
+
+- **Symptom** — what is observably wrong (the phase, the error, the alert).
+- **Evidence** — the specific command output that shows it (not a paraphrase).
+- **Hypothesis** — the most likely cause, given the evidence.
+- **Confidence** — high / medium / low, and what would raise it.
+- **Recommended action** — the smallest change that fixes the cause.
+- **Risk tier** — read-only · low (e.g. restart a pod) · medium (rollout, scale,
+  cordon) · high (Secret change, PV/PVC deletion, credential reset, node drain).
+- **Approval required** — yes/no, following from the risk tier.
+- **Verification plan** — how you will confirm the fix landed and the symptom
+  cleared (see the persistence/async/ownership checks above).
+
+## Using this skill inside an autonomous agent
+
+This skill is **knowledge, not a guardrail.** It teaches an order of inspection and
+how to reason about causes; it does not — and cannot — constrain what an agent is
+able to *do*. The `allowed-tools` field and the prose cautions here are guidance for
+the reader, not an enforcement boundary. If you wire this into an autonomous agent
+(Spring AI, LangChain, or similar), the real safety controls live outside the skill:
+Kubernetes **RBAC** scoped to what the agent legitimately needs, a **read-only tool
+surface by default** with mutations behind explicit approval gated by the risk tier
+above, and an **audit log** of every action. Let the skill shape the agent's
+thinking; let RBAC and tool-gating decide its reach.
 
 ## Reference
 
@@ -366,4 +511,10 @@ Deeper material lives alongside this file:
   problem area, safe to run (read-only) versus mutating.
 - `references/storage-provider-troubleshooting.md` — inspecting CSI storage
   providers (Longhorn/Ceph) via their CRDs, the disk-full-from-snapshots pattern,
-  and how to see what is eating a data disk without SSH.
+  how to see what is eating a data disk without SSH, and verifying backups
+  (snapshots are not backups).
+- `references/gitops-secrets-and-drift.md` — when a controller manages the object:
+  GitOps `Synced` vs `Healthy` and live-vs-declared drift, Secrets synced or
+  generated by an operator (missing vs sync-failure vs key mismatch), and the
+  chart-regenerated-password-vs-initialized-datastore drift that breaks stateful
+  apps.

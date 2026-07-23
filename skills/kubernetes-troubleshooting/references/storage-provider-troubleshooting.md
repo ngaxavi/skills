@@ -14,6 +14,7 @@ is actually consuming a data disk.
 - [The snapshot-bloat pattern](#snapshot-bloat)
 - [Seeing what eats a data disk without SSH](#du-without-ssh)
 - [Longhorn: bounding snapshots so it does not recur](#bounding-snapshots)
+- [Snapshots are not backups: verifying backup health](#backups)
 - [Ceph / other CSI: where to look](#other-csi)
 
 <a id="the-trap"></a>
@@ -134,6 +135,40 @@ only after the purge finishes; watch `.status.purgeStatus` until `isPurging` is
 false on every replica before declaring the disk recovered. Remember snapshots are
 not backups — they live on the same cluster; durability needs a `BackupTarget` to
 external storage.
+
+<a id="backups"></a>
+## Snapshots are not backups: verifying backup health
+
+A snapshot lives on the same disks as the volume it copies — it protects against
+"oops I deleted a row," not against losing the cluster or the storage. Durability
+needs a **backup to external storage** (object storage, another site). And a backup
+job that has been silently failing is worse than none, because it buys false
+confidence. When durability matters, verify the backups actually run and complete —
+do not assume.
+
+The mechanism varies (Velero, a provider's own `BackupTarget`, CSI
+`VolumeSnapshot` → external), but the checks are the same shape:
+
+```bash
+# Velero (common cross-provider backup tool)
+kubectl get backups -n velero                    # phase: Completed vs PartiallyFailed/Failed
+kubectl describe backup <name> -n velero         # errors, warnings, item counts
+kubectl get schedules -n velero                  # is a schedule even defined + active?
+
+# CSI snapshot path
+kubectl get volumesnapshots -A                   # READYTOUSE true?
+kubectl get volumesnapshotclass                  # class exists and points at the driver
+```
+
+- **Latest backup is stale or failing** — check the *most recent* backup's phase and
+  age, not that backups exist at all. A schedule that last succeeded weeks ago is a
+  failed backup system wearing a green badge.
+- **`PartiallyFailed`** — some items backed up, some did not; the ones that failed
+  are often exactly the stateful volumes you care about. Read the per-item errors.
+- **Missing/mismatched snapshot class** — a `VolumeSnapshot` stuck not-ready usually
+  means no `VolumeSnapshotClass` matches the CSI driver, or the external snapshotter
+  sidecar is not running. This is a config gap, not data loss — but it means
+  volume-level backups are silently not happening.
 
 <a id="other-csi"></a>
 ## Ceph / other CSI: where to look
