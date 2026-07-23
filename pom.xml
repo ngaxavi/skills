@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ngaxavi</groupId>
+    <artifactId>skills</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ngaxavi-skills</name>
+    <description>Domain-specific agent skills for JVM AI agents and code assistants.</description>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--
+          allowed-tools must mirror the frontmatter of each SKILL.md exactly.
+          The SkillsJars plugin validates these against the SKILL.md and fails
+          the build on any mismatch. Keep this in sync when you edit a skill.
+        -->
+        <skillsjars.skill.kubernetes-troubleshooting.allowed-tools>Bash Read Grep</skillsjars.skill.kubernetes-troubleshooting.allowed-tools>
+    </properties>
+
+    <!--
+      SCM lets the plugin derive the <org>/<repo> segment of the skill path
+      (META-INF/skills/<org>/<repo>/<skill>/) from the GitHub URL. Update the
+      URL to your actual repository before publishing.
+    -->
+    <scm>
+        <url>https://github.com/ngaxavi/agent-skills</url>
+        <connection>scm:git:https://github.com/ngaxavi/agent-skills.git</connection>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.skillsjars</groupId>
+                <artifactId>maven-plugin</artifactId>
+                <version>0.0.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

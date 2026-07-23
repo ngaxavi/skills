@@ -1,0 +1,6 @@
+.idea
+
+target
+
+# local skill links created by scripts/link-skills.sh (point into target/)
+.claude/
