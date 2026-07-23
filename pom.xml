@@ -48,6 +48,33 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--
+              Enforce the SKILL.md line budget on `mvn verify`. The body loads into
+              the model's context on every skill trigger, so the spine stays lean and
+              depth lives in references/. Raising the budget is a deliberate edit to
+              scripts/check-skill-size.sh, not an accident.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>check-skill-size</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>${project.basedir}/scripts/check-skill-size.sh</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

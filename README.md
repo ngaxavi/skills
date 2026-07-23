@@ -15,20 +15,30 @@ code assistants (Claude Code, Cursor, Codex) via [SkillsJars](https://www.skills
 ```
 skills/
 └── kubernetes-troubleshooting/
-    ├── SKILL.md                     # trigger + triage procedure
+    ├── SKILL.md                     # trigger + triage decision layer (<= 500 lines)
     └── references/
         ├── pod-states.md            # phases, container states, exit codes
         ├── kubectl-cheatsheet.md    # inspection commands, read-only vs mutating
         ├── storage-provider-troubleshooting.md  # CSI provider CRDs (Longhorn/Ceph), disk-full, snapshot bloat, backups
-        └── gitops-secrets-and-drift.md          # GitOps sync/drift, operator-synced secrets, credential drift
+        ├── gitops-secrets-and-drift.md          # GitOps sync/drift, operator-synced secrets, credential drift
+        ├── cluster-wide-events.md               # node reboot / service restart behind many pods restarting
+        └── agent-integration.md                 # driving the skill from an autonomous agent (RBAC, risk tiers)
+scripts/
+├── link-skills.sh                  # symlink skills into .claude/skills for live local editing
+└── check-skill-size.sh             # enforce the SKILL.md line budget (run by `mvn verify`)
 ```
 
 Each skill is packaged into `META-INF/skills/<org>/<repo>/<skill>/` inside the JAR.
 
+`SKILL.md` is the triage **decision layer** and stays lean — its whole body loads
+into the model's context on every trigger, so depth lives in `references/` (loaded on
+demand). `mvn verify` fails the build if any `SKILL.md` exceeds 500 lines; raising
+the budget is a deliberate edit to `scripts/check-skill-size.sh`.
+
 ## Build
 
 ```bash
-mvn package
+mvn verify                     # package + enforce the SKILL.md line budget
 jar tf target/*.jar | grep SKILL.md
 ```
 
