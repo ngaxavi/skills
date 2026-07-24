@@ -93,6 +93,3 @@ A skill is executable instruction delivered through a dependency resolver. Read 
 third-party skill before trusting it, and treat these the same way — the source is
 here, in plain Markdown, on purpose.
 
-## License
-
-MIT
