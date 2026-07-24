@@ -1,5 +1,8 @@
 # agent-skills
 
+[![build](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml/badge.svg)](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Domain-specific [Agent Skills](https://agentskills.io/specification) packaged as a
 Maven artifact, for use with JVM AI agents (Spring AI, LangChain4j) and file-based
 code assistants (Claude Code, Cursor, Codex) via [SkillsJars](https://www.skillsjars.com/).
