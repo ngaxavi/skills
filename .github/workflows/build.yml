@@ -1,0 +1,30 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and verify
+        run: mvn --batch-mode verify   # packages the JAR and enforces the SKILL.md size budget
+
+      # A green build already means the allowed-tools frontmatter matched the POM
+      # property and every SKILL.md stayed under the line budget. This step just
+      # makes the packaged classpath paths visible in the log, which is the thing
+      # most likely to be silently wrong after an SCM URL change.
+      - name: Show packaged skill paths
+        run: jar tf target/*.jar | grep 'SKILL.md'
