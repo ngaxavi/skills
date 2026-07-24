@@ -1,6 +1,6 @@
 # Skills for Developers and SREs
 
-[![build](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml/badge.svg)](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml)
+[![build](https://github.com/ngaxavi/skills/actions/workflows/build.yml/badge.svg)](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Domain-specific [Agent Skills](https://agentskills.io/specification) packaged as a

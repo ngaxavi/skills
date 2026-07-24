@@ -9,7 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ngaxavi-skills</name>
+    <name>skills</name>
     <description>Domain-specific agent skills for JVM AI agents and code assistants.</description>
 
     <properties>
@@ -30,8 +30,8 @@
       URL to your actual repository before publishing.
     -->
     <scm>
-        <url>https://github.com/ngaxavi/agent-skills</url>
-        <connection>scm:git:https://github.com/ngaxavi/agent-skills.git</connection>
+        <url>https://github.com/ngaxavi/skills</url>
+        <connection>scm:git:https://github.com/ngaxavi/skills.git</connection>
     </scm>
 
     <build>
