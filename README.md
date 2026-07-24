@@ -1,4 +1,4 @@
-# agent-skills
+# Skills for Developers and SREs
 
 [![build](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml/badge.svg)](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -62,8 +62,8 @@ Then depend on it from another project at `1.0.0-SNAPSHOT`.
   <version>0.5.0</version>
 </dependency>
 <dependency>
-  <groupId>com.github.ngaxavi.skills</groupId>
-  <artifactId>ngaxavi-agent-skills</artifactId>
+  <groupId>com.ngaxavi.skills</groupId>
+  <artifactId>ngaxavi-skills</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```

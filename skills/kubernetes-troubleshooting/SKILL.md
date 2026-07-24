@@ -24,7 +24,7 @@ license: MIT
 # Kubernetes Troubleshooting
 
 Triage failing Kubernetes workloads in a disciplined order. The goal is to reach
-the cause with the fewest, cheapest observations, and to gather evidence *before*
+the cause with the fewest, cheapest observations and to gather evidence *before*
 taking any destructive action.
 
 ## Prime directive: observe before you act
@@ -438,14 +438,17 @@ context included — and classify its blast radius:
 | Tier | Examples | Gate |
 |---|---|---|
 | Read-only | `get`, `describe`, `logs`, `top`, `/readyz` | Always allowed |
-| Low-risk, reversible | Delete one controller-owned failed pod; restart one stateless Deployment | Explain the evidence; verify owner/replica safety first |
-| Medium-risk | Scale, cordon, drain, restart a StatefulSet, edit a live object | Explicit approval, or a pre-approved runbook |
+| Low-risk, reversible | Delete one controller-owned failed pod its controller immediately recreates | Explain the evidence; verify owner/replica safety first |
+| Medium-risk | Scale, cordon, drain, restart a StatefulSet, or **any in-place edit/patch of a live object** | Explicit approval or a pre-approved runbook — "just one field" or "it's reversible" does **not** lower the tier |
 | High-risk, destructive | Secret changes, PV/PVC deletion, finalizer removal, credential reset, node reboot/drain, `--force --grace-period=0` | Human approval required |
 
 This is separate from observing before acting: the prime directive protects the
 *evidence*, this gate protects the *cluster*. A confident diagnosis does not
 authorize a mutation on the wrong object, namespace, or cluster — read the command
-back before you run it.
+back before you run it. And resist the rationalization that a live `edit`/`patch` is
+"low-risk" because it is one field or undoable: a live-object edit is approval-gated
+regardless — it can be reconciled away by its owner, and "reversible in principle" is not
+"reversible before anyone notices." Check `ownerReferences` and `--dry-run=server` first.
 
 Then verify the fix took — submitting a change is not the same as it landing, and
 starting an operation is not the same as it finishing:
