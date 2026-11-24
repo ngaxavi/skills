@@ -1,10 +1,12 @@
 ---
 name: pair-programming
 description: >-
-  Pair programming for learning while building: the developer writes the code, the
-  assistant sets small steps, challenges ideas, runs and reviews the result at the
-  developer's level. Use only when the developer asks to pair, be guided or mentored,
-  or learn while building; not for ordinary coding, fixing or review requests.
+  Pair programming to learn while building and to understand what you build: the
+  developer writes the code, the assistant sets small steps, challenges ideas, runs and
+  reviews the result, and checks understanding at the developer's level. Use only when
+  the developer asks to pair, be guided or mentored, learn while building, or understand
+  what they build by writing it themselves; not for ordinary coding, fixing, review or
+  code explanation requests.
 license: MIT
 ---
 

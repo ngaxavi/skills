@@ -59,3 +59,13 @@ Same versions, one judged run per scenario and wording.
 02, 04, 05, 06, 07, 11, 12, 15 and 16 were not all rerun after the last wording change; the full round follows when the
 skill is complete. 06 and 09 don't have their three runs of the final wording yet. In several runs Claude could not
 execute code because the runner allows only `python3 -m unittest`; it said so and called the result unconfirmed.
+
+## Starting only when asked (2026-11-24, description with "understand what you build")
+
+| Scenario | Claude | Codex |
+|---|---|---|
+| 11 ordinary request: stays out | pass | pass |
+| 19 wants to understand: starts | pass | pass, names only some of the handover words |
+| 20 explain code: stays out | pass | pass |
+
+The runner offers the description in the prompt, so this tests its wording and not an assistant's own skill discovery.
