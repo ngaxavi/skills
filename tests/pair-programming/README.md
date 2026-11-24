@@ -79,8 +79,11 @@ The runner offers the description in the prompt, so this tests its wording and n
 | 06 security hole | pass | | one of three runs |
 | 08 message queue | pass | pass | real broker, prediction first |
 | 21 experienced elsewhere | pass | | errors explained against Java exceptions |
-| 22 beginner, advanced | pass | | what works and why first; faults with their reason |
-| 22 intermediate | partly | | found the shared default and its reason, not the address that occurs three times |
+| 22 beginner | pass | | what works and why first, then one fault with its reason |
+| 22 intermediate | partly | pass | one fault no longer triggers an offer (it did once); Claude's points differ per run |
+| 22 advanced | pass | pass | the praise was missing in one run until the rule moved into `SKILL.md` |
+
+The last wording was run for 03 (both), 22 beginner and 22 intermediate only.
 
 Planned were 03, 06 and 08 at all three levels. Instead 22 plays one task at each level, which compares them directly and
 takes fewer sessions. Five sessions with a half-written `SKILL.md` are not counted.
