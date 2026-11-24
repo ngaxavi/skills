@@ -36,10 +36,11 @@ and call the result unconfirmed. Being told "it's green" is not a check.
 
 1. Use the task if it is in the request. Otherwise ask for it.
 2. Know the developer's level in this topic: new to it, uses it, or knows it well. Take it
-   from what they said, or ask that one question.
+   from what they said, or ask that one question. Then read that level's file and follow it:
+   [beginner](references/beginner.md), [intermediate](references/intermediate.md) or
+   [advanced](references/advanced.md).
 3. Find the versions in use (build file, lock file, running tool).
-4. In the first message: the task, the level you assume, the handover words in one line,
-   and the goal of the first step.
+4. In the first message: task, assumed level, handover words in one line, first goal.
 
 Don't write code or files at the start.
 
@@ -70,7 +71,7 @@ tests, say where things stand, and continue with at most one question.
 ## Proof when a unit test is not enough
 
 Ask: what could we observe that would show this is wrong? Use the real thing in a throwaway
-environment: a broker in a container whose consumer you stop halfway or feed the same
+environment ([proofs](references/proofs.md) by kind of work): a broker in a container whose consumer you stop halfway or feed the same
 message twice, a real database with two transactions, a stress test for threads, a rendered
 page, a dry run. A fake proves only your idea of the real thing.
 
@@ -79,11 +80,16 @@ page, a dry run. A fake proves only your idea of the real thing.
 Someone can know a language well and be new to its concurrency. What they write and explain
 tells you more than what they say about themselves.
 
+- **Experienced elsewhere:** someone who programs well but is newer to this language or tool
+  keeps their level for design, tests and reasoning. Explain only what is particular to it,
+  by comparison with what they know; no loops, no "why tests matter".
+- **"I don't know my level":** don't press. Start at intermediate, explain the language's own
+  ideas, and settle it from the first two steps.
 - A typo or a line fixed at once is a slip. Change nothing.
 - A wrong idea of how something works, or the same mistake twice, means more support in
-  **that sub-topic**. Offer it at once, with the evidence: "Your Java is strong. The counter
-  and the `volatile` answer were both about threads, so I'd take smaller steps on
-  concurrency. OK?" Other topics keep their level.
+  **that sub-topic**, also for an expert. The turn that answers it contains this line:
+  `Level: smaller steps on <sub-topic>, because <what you saw>. The rest stays. OK?`
+  Once per sub-topic; other topics keep their level.
 - Two steps in a row predicted and explained without help: offer less support.
 
 Talk about the topic, never label the person. The developer decides, and a no holds for the

@@ -69,3 +69,18 @@ execute code because the runner allows only `python3 -m unittest`; it said so an
 | 20 explain code: stays out | pass | pass |
 
 The runner offers the description in the prompt, so this tests its wording and not an assistant's own skill discovery.
+
+## With levels and proofs (2026-11-24)
+
+| Scenario | Claude | Codex | Note |
+|---|---|---|---|
+| 03 expert with a gap | pass | pass | Codex made no offer until it got a fixed line |
+| 04 one slip | pass | | |
+| 06 security hole | pass | | one of three runs |
+| 08 message queue | pass | pass | real broker, prediction first |
+| 21 experienced elsewhere | pass | | errors explained against Java exceptions |
+| 22 beginner, advanced | pass | | what works and why first; faults with their reason |
+| 22 intermediate | partly | | found the shared default and its reason, not the address that occurs three times |
+
+Planned were 03, 06 and 08 at all three levels. Instead 22 plays one task at each level, which compares them directly and
+takes fewer sessions. Five sessions with a half-written `SKILL.md` are not counted.
