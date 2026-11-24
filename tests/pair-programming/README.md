@@ -46,3 +46,16 @@ Claude Code 2.1.328 and codex-cli 0.166.0, default models, one run each.
 After these runs, "no log" became "no learning log" (it was read as logging output), and 03, 05 and 06 were made
 stricter about unasked solutions. The verdicts for those three use the stricter text. A pass here means the skill needs
 few words for it.
+
+## With the core skill (2026-11-24, without level, proof and log references)
+
+Same versions, one judged run per scenario and wording.
+
+| Scenarios | Claude | Codex |
+|---|---|---|
+| 01, 05 | pass | pass; 01 needed a fixed reply form, since a rule in prose was ignored twice |
+| 02, 04, 06, 07, 09, 11, 12, 15, 16 | pass | not run |
+
+02, 04, 05, 06, 07, 11, 12, 15 and 16 were not all rerun after the last wording change; the full round follows when the
+skill is complete. 06 and 09 don't have their three runs of the final wording yet. In several runs Claude could not
+execute code because the runner allows only `python3 -m unittest`; it said so and called the result unconfirmed.
