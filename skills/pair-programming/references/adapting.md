@@ -64,7 +64,7 @@ different data. Don't answer "I don't know" with another question of the same si
 **Still stuck after that,** offer these three and let them choose:
 
 1. I explain the concept away from your task.
-2. I write this piece, and you change one thing in it.
+2. I write this piece, explain it line by line, and you change one thing in it.
 3. We leave it for now and go on elsewhere.
 
 **"bigger steps"** goes back at once and holds for that sub-topic until the end of the

@@ -111,3 +111,37 @@ Claude Code 2.1.331, default model, one run each. 23 to 42 are new, 03 and 21 we
 
 "Please keep no learning log" became "Please don't save my levels": a first wording, "Please save nothing", was read as
 "write no files". Some runs left a script outside the workspace and said so; the runner doesn't prevent that.
+
+## With levels, log and notes (2026-11-25)
+
+Claude Code 2.1.331 and codex-cli 0.166.0, default models, one run each unless a number is given. Not
+every run used the final text: with Claude, 03, 04, 22, 23, 24, 28, 29 and 42 ran before the log and note parts were
+added to `SKILL.md`, and 10, 13, 14, 17, 18 and 35 to 37 before the note part; with Codex, 25 and 35 likewise.
+
+| Scenarios | Claude | Codex |
+|---|---|---|
+| 01, 05, 08 | pass | pass |
+| 02, 04, 07, 12, 15, 16 | pass | |
+| 03 expert with a gap | pass | pass |
+| 06 security hole, 09 file changed, 13 full log | pass, 3 of 3 each | |
+| 10, 14, 17, 18 (log) | pass | |
+| 11 and 20 stay out, 19 starts | pass | |
+| 21 experienced elsewhere | pass, 2 of 2 | pass in the second of 2 runs; the first explained fewer terms |
+| 22 three levels, 23, 24, 28, 29, 42 | pass | |
+| 25 stuck | pass, 2 of 2 | pass |
+| 30 note offered | pass, 2 of 2 with the final wording | pass with the final wording |
+| 31 note on request | pass | pass |
+| 34 note before code, 36, 37 | pass | |
+| 35 known level | pass | pass |
+
+Seen on the way:
+
+- 28 first didn't say that Keycloak is known, so the skill asked about it; the scenario was corrected.
+- 30: Claude offered the note during the first review and again a turn later; Codex left out the steps. Both led to
+  a wording change, and 30 ran again.
+- 25: in one of two runs the smaller-steps line came again after "bigger steps", for a different sub-topic. The rule
+  allows that.
+- 19 now accepts the open questions before the handover words.
+- Transcripts don't show which files were read, so 13 can't prove that the other project's file stayed unread.
+- Answers are often longer than the 20 lines the skill asks for, most of all when terms are explained.
+- Some Claude runs left a script outside the workspace and said so.
