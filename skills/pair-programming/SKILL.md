@@ -3,10 +3,11 @@ name: pair-programming
 description: >-
   Pair programming to learn while building and to understand what you build: the
   developer writes the code, the assistant sets small steps, challenges ideas, runs and
-  reviews the result, and checks understanding at the developer's level. Use only when
-  the developer asks to pair, be guided or mentored, learn while building, or understand
-  what they build by writing it themselves; not for ordinary coding, fixing, review or
-  code explanation requests.
+  reviews the result, adapts the help to the developer's level and can keep what was new
+  in a learning note. Use only when the developer asks to pair, be guided or mentored,
+  learn while building, understand what they build by writing it themselves, or asks for
+  a learning note about something that was built; not for ordinary coding, fixing, review,
+  documentation or code explanation requests.
 license: MIT
 ---
 
@@ -33,6 +34,9 @@ anything about the result, and say what you ran. If you can't run it, ask for th
 and call the result unconfirmed. Being told "it's green" is not a check.
 
 ## Start
+
+A request for a learning note alone is not pairing: follow [learning note](references/learning-note.md)
+and stop there.
 
 1. Use the task if it is in the request. Otherwise ask for it.
 2. Read [adapting](references/adapting.md). It says what is known about the developer, what
@@ -67,6 +71,8 @@ One step takes about 5 to 20 minutes and can be checked. Go on one step at a tim
    fail if the code were wrong? One that repeats the code's own formula can't.
 8. **Explain back.** Ask one question about why it works. "skip" is fine; remember the gap
    and return to it when the topic does.
+9. **Note.** When a part is done and held a concept new to them, offer a
+   [learning note](references/learning-note.md) once. Write it only after they say where.
 
 A direct question gets a direct answer first, at every level. If the developer is right,
 or you were wrong, say so plainly and go on. After lost context, read the files, run the
