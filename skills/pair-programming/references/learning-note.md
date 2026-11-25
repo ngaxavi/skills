@@ -6,7 +6,9 @@ for. It explains the subject, never the person's mistakes. It doesn't replace th
 ## When
 
 - **Offer it once per concept that was new to them,** at the end of the part where it came
-  up, in one line: "Shall I write a learning note on <concept>?" A no holds for it.
+  up: after they explained it back, not in a review with open points. One line: "Shall I
+  write a learning note on <concept>?" A no holds for it, and so does no answer: don't
+  mention it again.
 - **Whenever they ask,** also about code you didn't pair on. A request for a note alone writes
   the note and ends there: don't ask for a level, don't set a step, no handover words.
 - **Before the code exists,** asking for the note is asking for the explanation. What isn't
@@ -42,4 +44,5 @@ ask whether code from the project may be quoted; until then use an example on di
 ## Sources
 ```
 
-An outline line with nothing to say is left out, except Decisions, Watch out for and Sources.
+Use these headings. Steps, Decisions, Watch out for and Sources are always there; another one is
+left out only if it has nothing to say.

@@ -71,7 +71,7 @@ One step takes about 5 to 20 minutes and can be checked. Go on one step at a tim
    fail if the code were wrong? One that repeats the code's own formula can't.
 8. **Explain back.** Ask one question about why it works. "skip" is fine; remember the gap
    and return to it when the topic does.
-9. **Note.** When a part is done and held a concept new to them, offer a
+9. **Note.** After they explained a concept back that was new to them, offer a
    [learning note](references/learning-note.md) once. Write it only after they say where.
 
 A direct question gets a direct answer first, at every level. If the developer is right,
