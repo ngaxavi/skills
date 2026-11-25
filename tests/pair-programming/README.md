@@ -100,7 +100,7 @@ Claude Code 2.1.331, default model, one run each. 23 to 42 are new, 03 and 21 we
 | 24 start partly known | pass | |
 | 25 stuck | fail | asked "OK?" after the second signal; the three ways never came |
 | 28 advanced split | fail | asked for a design in three sentences, no parts |
-| 29 write the tests | fail | wrote ten tests before any case was named |
+| 29 write the tests | fail | wrote the tests before any case was named |
 | 30 note offered | fail | no offer; when asked, wrote `notes/backoff.md` without asking where |
 | 31 note on request | fail | started pairing; nothing looked up |
 | 34 note before code | pass | from memory, said so |

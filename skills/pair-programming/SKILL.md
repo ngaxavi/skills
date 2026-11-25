@@ -35,12 +35,13 @@ and call the result unconfirmed. Being told "it's green" is not a check.
 ## Start
 
 1. Use the task if it is in the request. Otherwise ask for it.
-2. Know the developer's level in this topic: new to it, uses it, or knows it well. Take it
-   from what they said, or ask that one question. Then read that level's file and follow it:
+2. Read [adapting](references/adapting.md). It says what is known about the developer, what
+   to ask (often nothing), and which file sets the form of the work:
    [beginner](references/beginner.md), [intermediate](references/intermediate.md) or
-   [advanced](references/advanced.md).
+   [advanced](references/advanced.md). Read that one too and follow both.
 3. Find the versions in use (build file, lock file, running tool).
-4. In the first message: task, assumed level, handover words in one line, first goal.
+4. In the first message: task, assumed level, handover words in one line, first goal. With
+   open questions: only those and the task, then wait.
 
 Don't write code or files at the start.
 
@@ -48,11 +49,11 @@ Don't write code or files at the start.
 
 One step takes about 5 to 20 minutes and can be checked. Go on one step at a time.
 
-1. **Goal.** Say what the step achieves. At a beginner's level, explain the idea. Otherwise
-   give goal and constraints, and let the developer propose the approach.
+1. **Goal.** Say what the step achieves, in the form of their level.
 2. **Challenge.** Before they type, ask one real question or give one counter-argument. If
    the idea is good, say so and why. Don't invent objections.
-3. **Check first.** They write the test, or whatever would show the step is wrong.
+3. **Check first.** They write the test, or whatever would show the step is wrong. On "write
+   the tests" you do.
 4. **Predict.** Before a run or an experiment, ask what will happen and why. One sentence
    is enough.
 5. **Red.** Say which failure is expected. Look at any other failure first.
@@ -76,26 +77,6 @@ environment ([proofs](references/proofs.md) by kind of work): a broker in a cont
 message twice, a real database with two transactions, a stress test for threads, a rendered
 page, a dry run. A fake proves only your idea of the real thing.
 
-## Levels belong to topics
-
-Someone can know a language well and be new to its concurrency. What they write and explain
-tells you more than what they say about themselves.
-
-- **Experienced elsewhere:** someone who programs well but is newer to this language or tool
-  keeps their level for design, tests and reasoning. Explain only what is particular to it,
-  by comparison with what they know; no loops, no "why tests matter".
-- **"I don't know my level":** don't press. Start at intermediate, explain the language's own
-  ideas, and settle it from the first two steps.
-- A typo or a line fixed at once is a slip. Change nothing.
-- One fault in the code is not enough to judge: ask what they expect it to do.
-- A wrong explanation, or the same mistake twice, means more support in **that sub-topic**,
-  also for an expert. The turn that answers it contains this line, once per sub-topic:
-  `Level: smaller steps on <sub-topic>, because <what they said>. The rest stays. OK?`
-- Two steps in a row predicted and explained without help: offer less support.
-
-Talk about the topic, never label the person. The developer decides, and a no holds for the
-session; only a safety trap may bring it up once more.
-
 ## Handover
 
 | They say | You do |
@@ -105,6 +86,8 @@ session; only a safety trap may bring it up once more.
 | "boring part" | write it and show it, no questions |
 | "just do it" | write it with tests in a file, at full quality; answer in the form below |
 | "teach me X" | make a borrowed entry the next step |
+| "write the tests" | ask which cases matter, unless they named them; then write the interface and the tests for those, run them red, and leave the code to them. The tests are borrowed |
+| "bigger steps", "smaller steps" | at once, see [adapting](references/adapting.md) |
 | "stop pairing" | close, then work normally |
 
 The answer to "just do it" always has these three parts, even for someone who doesn't want

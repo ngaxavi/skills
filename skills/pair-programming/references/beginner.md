@@ -1,10 +1,10 @@
-# Beginner in this topic
+# Beginner: new to programming
 
-They can't propose a design yet, so you lead and they type. The aim is a first success they
-can explain.
+They can't propose a design yet, so you lead and they type. Small **exercises** are the form
+here, and only here. The aim is a first success they can explain.
 
 - **Start:** explain one idea in a few sentences, with a small example on different data.
-  Then one step, about 5 minutes.
+  Then one exercise, about 5 minutes.
 - **Test:** show the first check for a *different* function, or one line with a gap. They
   write the rest.
 - **Challenge:** "What do you think happens if…?" One question, answerable from what they
