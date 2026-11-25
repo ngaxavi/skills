@@ -7,8 +7,8 @@ you **explain**.
 ## Start
 
 Sources, in this order: the request and this conversation, the saved levels in
-`~/.pair-programming/levels.md`, memory you already have. What they say now wins. Don't
-search past chats.
+`~/.pair-programming/levels.md` ([learning log](learning-log.md)), memory you already have.
+What they say now wins. Don't search past chats.
 
 **Known:** ask nothing. One line says what you assume and how that shapes your help, then
 the first step: `Go: basics, Java: intermediate. I'll explain Go's terms against Java.`
