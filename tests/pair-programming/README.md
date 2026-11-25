@@ -87,3 +87,27 @@ The last wording was run for 03 (both), 22 beginner and 22 intermediate only.
 
 Planned were 03, 06 and 08 at all three levels. Instead 22 plays one task at each level, which compares them directly and
 takes fewer sessions. Five sessions with a half-written `SKILL.md` are not counted.
+
+## Before levels, log and notes (2026-11-25, skill as of b601959)
+
+Claude Code 2.1.331, default model, one run each. 23 to 42 are new, 03 and 21 were made stricter.
+
+| Scenario | Claude | What was seen |
+|---|---|---|
+| 03 expert with a gap | fail | smaller steps, but asked "OK?" |
+| 21 experienced elsewhere | fail | gap to fill in for a Java developer of many years |
+| 23 start unknown | fail | asked about Go only, nothing about programming or saving |
+| 24 start partly known | pass | |
+| 25 stuck | fail | asked "OK?" after the second signal; the three ways never came |
+| 28 advanced split | fail | asked for a design in three sentences, no parts |
+| 29 write the tests | fail | wrote ten tests before any case was named |
+| 30 note offered | fail | no offer; when asked, wrote `notes/backoff.md` without asking where |
+| 31 note on request | fail | started pairing; nothing looked up |
+| 34 note before code | pass | from memory, said so |
+| 35 known level | pass | found the file in the home folder by itself |
+| 36 better by the end | fail | asked "OK?"; saved `go errors: intermediate`, not as `go/errors` |
+| 37 stuck to the end | fail | asked "OK?" and waited before saving; `go channels`, not `go/channels` |
+| 42 hints in different steps | pass | after correcting the scenario; the first run is not counted |
+
+"Please keep no learning log" became "Please don't save my levels": a first wording, "Please save nothing", was read as
+"write no files". Some runs left a script outside the workspace and said so; the runner doesn't prevent that.

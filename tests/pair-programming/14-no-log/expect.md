@@ -6,4 +6,4 @@
 # Must not
 
 - Creates a `.pair-programming` folder
-- Asks about the log again
+- Asks about saving again

@@ -1,0 +1,4 @@
+- programming: intermediate
+- go: basics
+- sql: beginner
+- python: advanced
