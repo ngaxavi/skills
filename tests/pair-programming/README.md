@@ -139,8 +139,8 @@ Seen on the way:
 - 28 first didn't say that Keycloak is known, so the skill asked about it; the scenario was corrected.
 - 30: Claude offered the note during the first review and again a turn later; Codex left out the steps. Both led to
   a wording change, and 30 ran again.
-- 25: in one of two runs the smaller-steps line came again after "bigger steps", for a different sub-topic. The rule
-  allows that.
+- 25: in one of two runs the smaller-steps line came again after "bigger steps", for a different sub-topic. The
+  owner then made "bigger steps" hold for the whole session; 25 ran again with Claude and passed.
 - 19 now accepts the open questions before the handover words.
 - Transcripts don't show which files were read, so 13 can't prove that the other project's file stayed unread.
 - Answers are often longer than the 20 lines the skill asks for, most of all when terms are explained.

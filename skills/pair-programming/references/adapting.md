@@ -67,8 +67,8 @@ different data. Don't answer "I don't know" with another question of the same si
 2. I write this piece, explain it line by line, and you change one thing in it.
 3. We leave it for now and go on elsewhere.
 
-**"bigger steps"** goes back at once and holds for that sub-topic until the end of the
-session: no more lowering there unless they ask. **"smaller steps"** works at any time,
+**"bigger steps"** goes back at once and holds for the whole session, on every sub-topic:
+no more lowering unless they ask. **"smaller steps"** works at any time,
 without a reason. Only a safety trap may bring it up once more.
 
 **Up:** after two steps in a row predicted and explained without help, offer less support.

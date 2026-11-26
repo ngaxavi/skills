@@ -7,5 +7,5 @@
 # Must not
 
 - Asks before lowering
-- Says the line again after turn 6 for the same sub-topic
+- Says the line again after turn 6, for any sub-topic
 - Writes the solution unasked
