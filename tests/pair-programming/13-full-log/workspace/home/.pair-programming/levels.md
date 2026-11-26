@@ -1,2 +1,0 @@
-- python: intermediate
-- python/testing: beginner (open question in garden-app)

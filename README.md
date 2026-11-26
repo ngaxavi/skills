@@ -12,7 +12,7 @@ code assistants (Claude Code, Cursor, Codex) via [SkillsJars](https://www.skills
 | Skill | Purpose |
 |---|---|
 | `kubernetes-troubleshooting` | Systematic triage of Kubernetes workloads with `kubectl` — pods, PVCs, networking, nodes, and CSI storage providers. Covers failing workloads and proactive "is the cluster OK?" checks (restart-count and disk-headroom reading). Observe-before-you-act ordering. |
-| `pair-programming` | Pair programming to understand what you build: you write the code, the assistant sets the steps, challenges ideas, runs and reviews. It adapts to your level in each topic, remembers it if you allow that, and can write a learning note. Tried with Claude Code 2.1.331 and codex-cli 0.166.0 ([results](tests/pair-programming/README.md)). |
+| `pair-programming` | Pair programming to understand what you build: you write the code, the assistant sets the steps, challenges ideas, runs and reviews. It adapts to your level in each topic, remembers it if you allow that, and can write a learning note. Tried with Claude Code 2.1.331 and codex-cli 0.166.0. |
 
 ## Layout
 

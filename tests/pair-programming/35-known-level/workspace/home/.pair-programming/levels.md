@@ -1,3 +1,0 @@
-- programming: intermediate
-- java: intermediate
-- go: basics

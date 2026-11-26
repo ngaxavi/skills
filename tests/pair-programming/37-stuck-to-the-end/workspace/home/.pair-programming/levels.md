@@ -1,3 +1,0 @@
-- programming: intermediate
-- go: basics
-- sql: beginner

@@ -4,3 +4,7 @@ target
 
 # local skill links created by scripts/link-skills.sh (point into target/)
 .claude/
+
+# scenario tests and their runner stay local
+tests/
+scripts/run-scenario.sh
