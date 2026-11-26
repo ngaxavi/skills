@@ -1,6 +1,6 @@
 # Skills for Developers and SREs
 
-[![build](https://github.com/ngaxavi/skills/actions/workflows/build.yml/badge.svg)](https://github.com/ngaxavi/agent-skills/actions/workflows/build.yml)
+[![build](https://github.com/ngaxavi/skills/actions/workflows/build.yml/badge.svg)](https://github.com/ngaxavi/skills/actions/workflows/build.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Domain-specific [Agent Skills](https://agentskills.io/specification) packaged as a
@@ -12,20 +12,29 @@ code assistants (Claude Code, Cursor, Codex) via [SkillsJars](https://www.skills
 | Skill | Purpose |
 |---|---|
 | `kubernetes-troubleshooting` | Systematic triage of Kubernetes workloads with `kubectl` — pods, PVCs, networking, nodes, and CSI storage providers. Covers failing workloads and proactive "is the cluster OK?" checks (restart-count and disk-headroom reading). Observe-before-you-act ordering. |
+| `pair-programming` | Pair programming to understand what you build: you write the code, the assistant sets the steps, challenges ideas, runs and reviews. It adapts to your level in each topic, remembers it if you allow that, and can write a learning note. Tried with Claude Code 2.1.331 and codex-cli 0.166.0. |
 
 ## Layout
 
 ```
 skills/
-└── kubernetes-troubleshooting/
-    ├── SKILL.md                     # trigger + triage decision layer (<= 500 lines)
+├── kubernetes-troubleshooting/
+│   ├── SKILL.md                     # trigger + triage decision layer (<= 500 lines)
+│   └── references/
+│       ├── pod-states.md            # phases, container states, exit codes
+│       ├── kubectl-cheatsheet.md    # inspection commands, read-only vs mutating
+│       ├── storage-provider-troubleshooting.md  # CSI provider CRDs (Longhorn/Ceph), disk-full, snapshot bloat, backups
+│       ├── gitops-secrets-and-drift.md          # GitOps sync/drift, operator-synced secrets, credential drift
+│       ├── cluster-wide-events.md               # node reboot / service restart behind many pods restarting
+│       └── agent-integration.md                 # driving the skill from an autonomous agent (RBAC, risk tiers)
+└── pair-programming/
+    ├── SKILL.md                     # start, loop, handover, safety
     └── references/
-        ├── pod-states.md            # phases, container states, exit codes
-        ├── kubectl-cheatsheet.md    # inspection commands, read-only vs mutating
-        ├── storage-provider-troubleshooting.md  # CSI provider CRDs (Longhorn/Ceph), disk-full, snapshot bloat, backups
-        ├── gitops-secrets-and-drift.md          # GitOps sync/drift, operator-synced secrets, credential drift
-        ├── cluster-wide-events.md               # node reboot / service restart behind many pods restarting
-        └── agent-integration.md                 # driving the skill from an autonomous agent (RBAC, risk tiers)
+        ├── adapting.md              # what to ask, signs of being stuck, smaller and bigger steps
+        ├── beginner.md, intermediate.md, advanced.md  # form of work per level
+        ├── proofs.md                # when a unit test is not enough
+        ├── learning-log.md          # saved levels, borrowed code, open questions
+        └── learning-note.md         # a document about what was new
 scripts/
 ├── link-skills.sh                  # symlink skills into .claude/skills for live local editing
 └── check-skill-size.sh             # enforce the SKILL.md line budget (run by `mvn verify`)
